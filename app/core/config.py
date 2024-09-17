@@ -19,10 +19,10 @@ class Settings(BaseSettings):
     DATABASE_URL: str = "sqlite:///./test.db"
     
     # Redis Settings
-    REDIS_HOST: str = "localhost"
-    REDIS_USER: str = "root"
-    REDIS_PASSWORD: str = "root"
-    REDIS_PORT: str = "6379"
+    REDIS_HOST: str 
+    REDIS_USER: str 
+    REDIS_PASSWORD: str
+    REDIS_PORT: str
 
     # JWT Settings
     SECRET_KEY: str = "key"
