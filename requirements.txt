@@ -1,0 +1,7 @@
+fastapi
+uvicorn
+httpx
+pydantic_settings
+fastapi_limiter
+Pillow
+redis

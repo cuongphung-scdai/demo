@@ -1,0 +1,66 @@
+stages:
+  - test
+  - deploy
+
+test:
+  stage: test
+  only:
+    - dev
+    - staging
+    - production
+  script:
+    - echo run tests in this section
+
+step-deploy-dev:
+  stage: deploy
+  only:
+    - dev
+  before_script:
+    - cp ${DEV_ENV_FILE} .env
+  script:
+    - mkdir logs
+    - mkdir data
+    - sudo docker image prune -f
+    - docker-compose -f docker-compose-dev.yml down
+    - docker-compose -f docker-compose-dev.yml build
+    - docker-compose -f docker-compose-dev.yml up -d
+  environment:
+    name: dev
+    url: https://
+  when: manual
+
+step-deploy-staging:
+  stage: deploy
+  only:
+    - staging
+  before_script:
+    - cp ${STG_ENV_FILE} .env
+  script:
+    - mkdir logs
+    - mkdir data
+    - sudo docker image prune -f
+    - docker-compose -f docker-compose-staging.yml down
+    - docker-compose -f docker-compose-staging.yml build
+    - docker-compose -f docker-compose-staging.yml up -d
+  environment:
+    name: staging
+    url: https://
+  when: manual
+
+step-deploy-prod:
+  stage: deploy
+  only:
+    - production
+  before_script:
+    - cp ${PROD_ENV_FILE} .env
+  script:
+    - mkdir logs
+    - mkdir data
+    - sudo docker image prune -f
+    - docker-compose -f docker-compose.yml down
+    - docker-compose -f docker-compose.yml build
+    - docker-compose -f docker-compose.yml up -d
+  environment:
+    name: production
+    url: https://
+  when: manual

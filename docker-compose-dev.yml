@@ -1,0 +1,30 @@
+version: '3.9'
+ 
+services:
+  nxtrans-ai-dev:
+    image: nxtrans-ai-dev
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: 'nxtrans-ai-dev'
+    logging:
+      options:
+        max-size: "5m"
+        max-file: "3"
+    ports:
+      - ${DOCKER_PORT}:4000
+    env_file:
+      - .env
+    entrypoint: /bin/sh
+    restart: always
+    command:
+      - ./scripts/start_server.sh
+    networks:
+      - nxtrans-ai-dev
+networks:
+  nxtrans-ai-dev:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+      - subnet:  17.101.0.0/16
