@@ -64,7 +64,7 @@ async def get_supported_tones():
         raise HTTPException(status_code=500, detail=str(e))
 
 
-@router.get("/supported-domains", response_model=list)
+@router.get("/supported-domains", response_model=dict)
 async def get_supported_domains():
     """Endpoint to get a list of supported domains."""
     try:

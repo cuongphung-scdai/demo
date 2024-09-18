@@ -4,7 +4,6 @@ from fastapi.middleware.cors import CORSMiddleware
 from app.api.routes import router as translation_router
 from app.core.config import settings
 from fastapi_limiter import FastAPILimiter
-from fastapi_limiter.depends import RateLimiter
 
 app = FastAPI(
     title="NTQ AI - Machine Translation API",
@@ -12,16 +11,11 @@ app = FastAPI(
     version="1.0.0",
 )
 
+@app.on_event("startup")
+async def startup():
+    redis_connection = redis.from_url(f"redis://{settings.REDIS_HOST}:{settings.REDIS_PORT}/0", encoding="utf-8", decode_responses=True)
+    await FastAPILimiter.init(redis_connection)
 
-# @app.on_event("startup")
-# async def startup():
-#     """Initialize Redis connection and FastAPI limiter during app startup."""
-#     redis_url = (
-#         f"redis://{settings.REDIS_USER}:{settings.REDIS_PASSWORD}"
-#         f"@{settings.REDIS_HOST}:{settings.REDIS_PORT}/0"
-#     )
-#     redis_connection = redis.from_url(redis_url, encoding="utf-8", decode_responses=True)
-#     await FastAPILimiter.init(redis_connection)
 
 # Configure CORS middleware
 app.add_middleware(

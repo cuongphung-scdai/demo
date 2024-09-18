@@ -5,3 +5,6 @@ pydantic_settings
 fastapi_limiter
 Pillow
 redis
+fast-langdetect
+torch
+transformers
